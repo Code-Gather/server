@@ -15,7 +15,6 @@ import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class OAuthRequestUtil {
 
     private final OAuthProperty oAuthProperty;
