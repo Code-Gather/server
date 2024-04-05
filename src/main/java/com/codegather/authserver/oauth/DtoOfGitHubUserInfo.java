@@ -10,7 +10,9 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DtoOfGitHubUserInfo {
 
-    private long id;
+    private String id;
 
     private String name;
+
+    private String social = "GITHUB";
 }
