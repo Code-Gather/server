@@ -1,11 +1,5 @@
 oauth:
   properties:
-    kakao:
-      client-id: ${KAKAO_CLIENT_ID}
-      redirect-uri: ${KAKAO_REDIRECT_URI}
-      token-uri: https://kapi.kakao.com/v2/user/me
-      user-info-uri: https://kauth.kakao.com/oauth/token
-
     github:
       client-id: ${GITHUB_CLIENT_ID}
       client-secret: ${GITHUB_CLIENT_SECRET}
