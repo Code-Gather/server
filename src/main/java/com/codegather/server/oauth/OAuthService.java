@@ -24,8 +24,8 @@ public class OAuthService {
     private final OAuthProperty oAuthProperty;
     private final ObjectMapper objectMapper;
 
-    public Mono<DtoOfGitHubUserInfo> get(String target, String code) {
-        OAuthProperty.OAuthInfo property = oAuthProperty.properties().get(target);
+    public Mono<DtoOfGitHubUserInfo> getOAuthUserInfo(String code) {
+        OAuthProperty.OAuthInfo property = oAuthProperty.properties().get("github");
         return getOAuthToken(property, code)
                 .flatMap(response -> getUserInfo(property, response.accessToken()));
     }
@@ -46,7 +46,7 @@ public class OAuthService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class)
-                .flatMap(this::validationGetOAuthTokenBody);
+                .map(this::validationGetOAuthTokenBody);
     }
 
     private Function<UriBuilder, URI> setQueryParams(OAuthProperty.OAuthInfo property, String code) {
@@ -57,14 +57,14 @@ public class OAuthService {
         return uri -> uri.queryParams(params).build();
     }
 
-    private Mono<DtoOfOAuthToken> validationGetOAuthTokenBody(String body) {
+    private DtoOfOAuthToken validationGetOAuthTokenBody(String body) {
         try {
             JsonNode jsonNode = objectMapper.readTree(body);
 
             if (jsonNode.has("error")) {
                 throw new RuntimeException("Error in response: " + jsonNode.get("error").asText());
             }
-            return Mono.just(objectMapper.treeToValue(jsonNode, DtoOfOAuthToken.class));
+            return objectMapper.treeToValue(jsonNode, DtoOfOAuthToken.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Undefined Error. Failed to process response body.", e);
         }

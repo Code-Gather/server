@@ -2,3 +2,11 @@ spring:
   profiles:
     include:
       - oauth
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/admin
+      username: root
+      password: 1234
+      repositories:
+        type: auto
